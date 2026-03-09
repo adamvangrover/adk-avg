@@ -114,6 +114,25 @@ def deploy():
   pass
 
 
+@main.command("symphony", cls=HelpfulCommand)
+@click.option(
+    "--workflow",
+    type=click.Path(exists=True, dir_okay=False, resolve_path=True),
+    default="WORKFLOW.md",
+    help="Optional. Path to the WORKFLOW.md file.",
+)
+def cli_symphony(workflow: str):
+  """Starts the Symphony Service orchestrator.
+
+  Example:
+    adk symphony --workflow ./my_workflow.md
+  """
+  from google.adk.symphony.app import SymphonyApp
+  import asyncio
+  app = SymphonyApp(workflow_path=workflow)
+  asyncio.run(app.run())
+
+
 @main.command("create", cls=HelpfulCommand)
 @click.option(
     "--model",
